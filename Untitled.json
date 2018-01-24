@@ -1,0 +1,84 @@
+This document defines the flow of data from project upload to POST request from the engine to the backend-api for license checking.
+
+[{"projectname" : "string",
+  "project owner": "string"
+}
+{
+  "library" : "Library Name",
+  "license" : "Licence Name"
+},
+{
+  "library" : "Library Name",
+  "license" : "Licence Name"
+},
+{
+  "library" : "Library Name",
+  "license" : "Licence Name"
+}]
+
+
+After this post request, the license-checking module, takes the licenses & project lists and checks with database for the following in policies table in the database:
+The policy table contains the policy-id, policy type:project/license/attribute, name: of project/license/attribute, action: 'deny', 'approve', 'flag'
+
+
+Policy for Project and license:
+    "Deny-list" : if name found in this list remove from total license list and append to deny list with reason: 'owner' chose to 'deny' 'value' as a 'policy-type' for this project
+
+    "Flag list"  : if name found in this list, append to flag list with reason:
+
+Policy for attribtues:
+    gather the list of all licenses that still in the list and make three license_lists:
+
+    'permission'  'condition'  'restriction'
+
+    for each license, then for every query return from the database with attribute as the policy:
+
+
+    check for attribute.action + attribute.name from the policy against license_has_attribute.value
+        if deny attribute and attribute in permission or condition list: remove the associated license from the license list, update license_lists
+
+
+
+
+
+then the collated set of permission (can), conditions(must) and restriction(cannot) for each license are calclulated and
+these are packaged into the second json for displaying to the end user.
+
+
+"approve-list" == "yes"
+{
+  "library" : "Library Name",
+  "licenses" : ["Licence Name","Licence Name","Licence Name"],
+  "license-score" : ["score","score","score"],
+  "permissions" : ["attribute","attribute","attribute"],
+  "conditions" : ["attribute","attribute","attribute"],
+  "restrictions" :["attribute","attribute","attribute"]
+}
+
+
+"deny-list" == "yes"
+[{
+  "library" : "Library Name",
+  "licenses" : ["Licence Name","Licence Name","Licence Name"],
+  "license-score" : ["score","score","score"],
+  "permissions" : ["attribute","attribute","attribute"],
+  "conditions" : ["attribute","attribute","attribute"],
+  "restrictions" :["attribute","attribute","attribute"],
+  "reason" : ["policy id", "policy name"]
+}]
+
+"flag-list" == "yes"
+{
+  "library" : "Library Name",
+  "licenses" : ["Licence Name","Licence Name","Licence Name"],
+  "permissions" : ["attribute","attribute","attribute"],
+  "conditions" : ["attribute","attribute","attribute"],
+  "restrictions" :["attribute","attribute","attribute"],
+  "reason" : ["policy id", "policy name"]
+}
+
+
+
+list the license
+
+customer policy

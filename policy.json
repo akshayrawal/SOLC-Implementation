@@ -1,0 +1,29 @@
+[{
+    "policy-id": "",
+    "policy type": "license",
+    "name": "Microsoft Public License(Ms-PL)",
+    "action": "deny"
+  },
+  {
+    "policy-id": "",
+    "policy type": "attribute",
+    "name": {
+       "attribute": "Disclose Source",
+       "value" : "must"},
+    "action": "flag"
+  },
+  {
+    "policy-id": "",
+    "policy type": "attribute",
+    "name": {
+       "attribute": "Sublicense",
+       "value" : "cannot"},
+    "action": "deny"
+  },
+  {
+    "policy-id": "",
+    "policy type": "library",
+    "name": "This one",
+    "action": "deny"
+  }
+]
